@@ -112,7 +112,7 @@
   .pill .value{font-size:1.35rem;}
   .scroll-cue{
     position:absolute;
-    bottom:2.2rem;
+    bottom:1.2rem;
     left:50%;
     transform:translateX(-50%);
     width:1px;
@@ -213,6 +213,16 @@
     .gallery-grid img{height:200px;}
     .gallery-grid .tall{grid-row:auto; height:200px;}
   }
+  .gallery-grid .wide {
+    grid-column: 1 / -1;
+    height: 320px;
+  }
+
+  @media (max-width: 700px) {
+    .gallery-grid .wide {
+      height: 220px;
+    }
+  }
 
   /* ---------- TIMELINE ---------- */
   .timeline{
@@ -269,6 +279,17 @@
   ::selection{background:var(--gold); color:var(--wine-950);}
 
   /* ---------- SCROLL REVEAL ---------- */
+  .hero-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 1s ease, transform 1s cubic-bezier(.22,.61,.36,1);
+    will-change: opacity, transform;
+  }
+  .hero-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   .reveal{
     opacity:0;
     transform:translateY(36px);
@@ -314,7 +335,7 @@
   .stagger.is-visible > *:nth-child(7){transition-delay:0.50s;}
 
   @media (prefers-reduced-motion: reduce){
-    .reveal, .reveal-fade, .reveal-scale, .reveal-line, .stagger > *{
+    .hero-reveal, .reveal, .reveal-fade, .reveal-scale, .reveal-line, .stagger > *{
       opacity:1 !important;
       transform:none !important;
       transition:none !important;
@@ -325,21 +346,21 @@
 <body>
 
 <section class="hero">
-  <img class="hero-photo" src="photo-1.jpg" alt="Kacper i Nikola">
-  <div class="hero-names">K A C P E R <span class="heart">♥</span> N I K O L A</div>
-  <h1 class="hero-title">Nasza historia</h1>
-  <p class="hero-sub">Dwoje ludzi, jedna wspólna droga.</p>
-  <div class="hero-dates">
+  <img class="hero-photo hero-reveal" src="photo-1.jpg" alt="Kacper i Nikola">
+  <div class="hero-names hero-reveal">K A C P E R <span class="heart">♥</span> N I K O L A</div>
+  <h1 class="hero-title hero-reveal">Nasza historia</h1>
+  <p class="hero-sub hero-reveal">Dwoje ludzi, jedna wspólna droga.</p>
+  <div class="hero-dates hero-reveal">
     <div class="pill">
       <div class="label">POZNALIŚMY SIĘ</div>
-      <div class="value">Początek lutego 2026</div>
+      <div class="value">Luty 2026</div>
     </div>
     <div class="pill">
       <div class="label">RAZEM OD</div>
       <div class="value">13.04.2026</div>
     </div>
   </div>
-  <div class="scroll-cue"></div>
+  <div class="scroll-cue hero-reveal"></div>
 </section>
 
 <section class="counter-wrap">
@@ -359,7 +380,7 @@
 <section class="story">
   <div class="label reveal">NASZA HISTORIA</div>
   <h2 class="reveal">Od jednej wiadomości do naszego „my”</h2>
-  <p class="reveal">Poznaliśmy się na początku lutego 2026 roku. Wszystko zaczęło się zwyczajnie, a mimo to z każdym dniem chciałem wiedzieć o Tobie coraz więcej.</p>
+  <p class="reveal">Poznaliśmy się w lutym 2026 roku. Wszystko zaczęło się od zwykłej rozmowy w internecie, od której z każdym dniem chciałem wiedzieć o Tobie coraz więcej. Pamiętam stres przed pierwszym spotkaniem, ale jak zaczęliśmy rozmawiać zaczęło być łatwiej.</p>
   <blockquote class="reveal">13 kwietnia 2026 roku zaczęło się nasze oficjalne „my”.</blockquote>
   <p class="reveal">I dziś najbardziej lubię myśleć o tym, że ten zwykły początek doprowadził mnie do osoby, bez której nie wyobrażam sobie swojej codzienności. ♥</p>
 </section>
@@ -368,12 +389,11 @@
   <div class="label reveal">GALERIA</div>
   <h2 class="reveal">Nasze kadry</h2>
   <div class="gallery-grid stagger">
-    <img class="tall" src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=700&auto=format&fit=crop" alt="">
-    <img src="https://images.unsplash.com/photo-1521541348890-fb0a3fbdb4de?q=80&w=700&auto=format&fit=crop" alt="">
-    <img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?q=80&w=700&auto=format&fit=crop" alt="">
-    <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=700&auto=format&fit=crop" alt="">
-    <img class="tall" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=700&auto=format&fit=crop" alt="">
-    <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=700&auto=format&fit=crop" alt="">
+    <img class="tall" src="IMG_20260911_145604_612.jpg" alt="">
+    <img src="IMG_20260911_145642_633.jpg" alt="">
+    <img src="IMG_20260911_145905_246.jpg" alt="">
+    <img src="screen.jpg" alt="">
+    <img class="wide" src="IMG_20260425_210112_221.jpg" alt="Nasze zdjęcie">
   </div>
 </section>
 
@@ -382,7 +402,7 @@
   <h2 class="reveal">Nasz kalendarz</h2>
   <div class="timeline stagger">
     <div class="tl-item">
-      <div class="tl-date">Początek lutego 2026</div>
+      <div class="tl-date">Luty 2026</div>
       <div class="tl-desc">Poznaliśmy się</div>
     </div>
     <div class="tl-item">
@@ -392,6 +412,10 @@
     <div class="tl-item">
       <div class="tl-date">13.04.2026</div>
       <div class="tl-desc">Dzień, w którym zostaliśmy parą</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">27.07.2026</div>
+      <div class="tl-desc">Pierwsza nocka</div>
     </div>
   </div>
 </section>
@@ -448,6 +472,15 @@
   }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
 
   revealEls.forEach(el => io.observe(el));
+
+  // Animacja dla sekcji głównej zaraz po załadowaniu
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.hero-reveal').forEach((el, index) => {
+      setTimeout(() => {
+        el.classList.add('is-visible');
+      }, index * 120);
+    });
+  });
 </script>
 
 </body>
