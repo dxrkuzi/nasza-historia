@@ -32,6 +32,148 @@
     color:var(--cream);
     font-family:'Cormorant Garamond', serif;
     -webkit-font-smoothing:antialiased;
+    overflow: hidden; /* Blokada przewijania do momentu wpisania PINu */
+  }
+
+  /* ---------- LOCKSCREEN (PIN) ---------- */
+  #pin-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100svh;
+    background: radial-gradient(circle at 50% 30%, rgba(120, 25, 50, 0.45), transparent 70%), var(--wine-950);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  #pin-screen.unlocked {
+    opacity: 0;
+    transform: scale(1.05);
+    pointer-events: none;
+  }
+
+  .pin-heart {
+    font-size: 2.2rem;
+    color: #ff4b72;
+    text-shadow: 0 0 20px rgba(255, 75, 114, 0.6);
+    margin-bottom: 1.2rem;
+    animation: pulse 2s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+
+  .pin-title {
+    font-size: clamp(2rem, 6vw, 2.8rem);
+    font-weight: 400;
+    margin: 0 0 0.8rem;
+    color: #fff;
+    text-align: center;
+  }
+
+  .pin-title span {
+    font-style: italic;
+    color: var(--blush);
+  }
+
+  .pin-subtitle {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    color: var(--cream-dim);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .pin-dots {
+    display: flex;
+    gap: 0.9rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .pin-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(231,183,191,0.5);
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .pin-dot.filled {
+    background: var(--blush);
+    border-color: var(--blush);
+    box-shadow: 0 0 10px rgba(231,183,191,0.5);
+  }
+
+  .pin-dot.error {
+    background: #ff4b4b;
+    border-color: #ff4b4b;
+    box-shadow: 0 0 10px rgba(255,75,75,0.8);
+  }
+
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .key-btn {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04);
+    color: #fff;
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0 auto;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+
+  .key-btn:active {
+    background: rgba(231,183,191,0.25);
+    transform: scale(0.92);
+  }
+
+  .key-btn.empty {
+    border: none;
+    background: transparent;
+    cursor: default;
+  }
+
+  .key-btn.delete {
+    font-size: 1.1rem;
+    border: none;
+    background: transparent;
+    color: var(--cream-dim);
+  }
+
+  /* Animacja błędnego kodu */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+  }
+
+  .shake {
+    animation: shake 0.4s ease-in-out;
   }
 
   .label{
@@ -345,6 +487,35 @@
 </head>
 <body>
 
+<!-- EKRAN BLOKADY (PIN) -->
+<div id="pin-screen">
+  <div class="pin-heart">♥</div>
+  <h1 class="pin-title">Kacper <span>&amp;</span> Nikola</h1>
+  <div class="pin-subtitle">WPISZ PIN, ABY OTWORZYĆ NASZĄ HISTORIĘ</div>
+  
+  <div class="pin-dots" id="pin-dots">
+    <div class="pin-dot"></div>
+    <div class="pin-dot"></div>
+    <div class="pin-dot"></div>
+    <div class="pin-dot"></div>
+  </div>
+
+  <div class="keypad">
+    <button class="key-btn" onclick="pressKey('1')">1</button>
+    <button class="key-btn" onclick="pressKey('2')">2</button>
+    <button class="key-btn" onclick="pressKey('3')">3</button>
+    <button class="key-btn" onclick="pressKey('4')">4</button>
+    <button class="key-btn" onclick="pressKey('5')">5</button>
+    <button class="key-btn" onclick="pressKey('6')">6</button>
+    <button class="key-btn" onclick="pressKey('7')">7</button>
+    <button class="key-btn" onclick="pressKey('8')">8</button>
+    <button class="key-btn" onclick="pressKey('9')">9</button>
+    <button class="key-btn empty"></button>
+    <button class="key-btn" onclick="pressKey('0')">0</button>
+    <button class="key-btn delete" onclick="deleteKey()">⌫</button>
+  </div>
+</div>
+
 <section class="hero">
   <img class="hero-photo hero-reveal" src="photo-1.jpg" alt="Kacper i Nikola">
   <div class="hero-names hero-reveal">K A C P E R <span class="heart">♥</span> N I K O L A</div>
@@ -426,6 +597,70 @@
 </footer>
 
 <script>
+  // ---------- System PIN ----------
+  const CORRECT_PIN = "1304";
+  let enteredPin = "";
+  const dots = document.querySelectorAll('.pin-dot');
+  const pinScreen = document.getElementById('pin-screen');
+
+  function pressKey(num) {
+    if (enteredPin.length < 4) {
+      enteredPin += num;
+      updateDots();
+
+      if (enteredPin.length === 4) {
+        setTimeout(checkPin, 150);
+      }
+    }
+  }
+
+  function deleteKey() {
+    if (enteredPin.length > 0) {
+      enteredPin = enteredPin.slice(0, -1);
+      updateDots();
+    }
+  }
+
+  function updateDots() {
+    dots.forEach((dot, index) => {
+      if (index < enteredPin.length) {
+        dot.classList.add('filled');
+      } else {
+        dot.classList.remove('filled', 'error');
+      }
+    });
+  }
+
+  function checkPin() {
+    if (enteredPin === CORRECT_PIN) {
+      pinScreen.classList.add('unlocked');
+      document.body.style.overflow = 'auto'; // Przywrócenie przewijania
+      startHeroAnimation();
+    } else {
+      const pinDotsContainer = document.getElementById('pin-dots');
+      dots.forEach(dot => dot.classList.add('error'));
+      pinDotsContainer.classList.add('shake');
+
+      setTimeout(() => {
+        enteredPin = "";
+        updateDots();
+        pinDotsContainer.classList.remove('shake');
+      }, 500);
+    }
+  }
+
+  // Obsługa wpisywania z klawiatury komputera
+  document.addEventListener('keydown', (e) => {
+    if (pinScreen.classList.contains('unlocked')) return;
+    if (e.key >= '0' && e.key <= '9') {
+      pressKey(e.key);
+    } else if (e.key === 'Backspace') {
+      deleteKey();
+    }
+  });
+
+
+  // ---------- Licznik czasu ----------
   const startDate = new Date('2026-04-13T00:00:00');
 
   function pad(n){ return String(n).padStart(2,'0'); }
@@ -460,6 +695,7 @@
   updateCounter();
   setInterval(updateCounter, 1000);
 
+
   // ---------- Scroll reveal ----------
   const revealEls = document.querySelectorAll('.reveal, .reveal-fade, .reveal-scale, .reveal-line, .stagger');
   const io = new IntersectionObserver((entries) => {
@@ -473,14 +709,13 @@
 
   revealEls.forEach(el => io.observe(el));
 
-  // Animacja dla sekcji głównej zaraz po załadowaniu
-  window.addEventListener('DOMContentLoaded', () => {
+  function startHeroAnimation() {
     document.querySelectorAll('.hero-reveal').forEach((el, index) => {
       setTimeout(() => {
         el.classList.add('is-visible');
       }, index * 120);
     });
-  });
+  }
 </script>
 
 </body>
